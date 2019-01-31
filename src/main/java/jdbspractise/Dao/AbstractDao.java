@@ -1,0 +1,11 @@
+package jdbspractise.Dao;
+
+import java.sql.Connection;
+
+public abstract class AbstractDao {
+    protected final Connection connection;
+
+    public AbstractDao(Connection connection) {
+        this.connection = connection;
+    }
+}
