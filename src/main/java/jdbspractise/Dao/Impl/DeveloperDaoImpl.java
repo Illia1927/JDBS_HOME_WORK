@@ -13,7 +13,7 @@ public class DeveloperDaoImpl extends AbstractDao implements DeveloperDao {
     public DeveloperDaoImpl(Connection connection) {
         super(connection);
     }
-//override mothod
+//override mothods
     @Override
     public void addDeveloper(Developer developer) {
         final String INSERT_DEVELOPER =
