@@ -1,12 +1,14 @@
 package jdbspractise;
 
-import jdbspractise.Dao.Impl.DeveloperDaoImpl;
-import jdbspractise.Model.Developer;
-import jdbspractise.Service.DeveloperService;
-import jdbspractise.Service.Impl.DeveloperServiceImpl;
-import jdbspractise.Utill.ConnectionUtill;
+import jdbspractise.dao.impl.DeveloperDaoImpl;
+import jdbspractise.model.Developer;
+import jdbspractise.model.Skill;
+import jdbspractise.service.DeveloperService;
+import jdbspractise.service.impl.DeveloperServiceImpl;
+import jdbspractise.utill.ConnectionUtill;
 
 import java.sql.Connection;
+import java.util.HashSet;
 
 public class Main {
     public static void main(String[] args) {
@@ -19,16 +21,35 @@ public class Main {
                 .age(18)
                 .salary(500D)
                 .build();
+//
+//        Developer developerTwo = Developer
+//                .builder()
+//                .name("Illia")
+//                .age(20)
+//                .salary(400D)
+//                .build();
+
+//        developerService.addDeveloper(developerOne);
+//        developerService.addDeveloper(developerTwo);
+//        developerService.removeDeveloper(2L);
+        Skill skill = Skill
+                .builder()
+                .skill_id(1L)
+                .typeOfSkill(Skill.TypeOfSkill.JAVA)
+                .skillLevel(Skill.SkillLevel.JUNIOR)
+                .build();
+
 
         Developer developerTwo = Developer
                 .builder()
                 .name("Illia")
                 .age(20)
                 .salary(400D)
+                .skills(new HashSet<>())
                 .build();
+        developerTwo.addSkill(skill);
 
-//        developerService.addDeveloper(developerOne);
-//        developerService.addDeveloper(developerTwo);
-        developerService.removeDeveloper(2L);
+        developerService.addDeveloper(developerTwo);
+
     }
 }

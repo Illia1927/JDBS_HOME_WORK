@@ -1,10 +1,12 @@
-package jdbspractise.Model;
+package jdbspractise.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import java.util.Set;
 
 @Data
 @Builder
@@ -16,4 +18,10 @@ public class Developer {
     private String name;
     private Integer age;
     private Double salary;
+    private Set<Skill> skills;
+
+    public void addSkill(Skill skill){
+        skill.setDeveloperSkills(this);
+        skills.add(skill);
+    }
 }
