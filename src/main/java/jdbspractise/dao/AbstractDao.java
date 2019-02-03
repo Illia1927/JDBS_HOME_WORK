@@ -1,4 +1,4 @@
-package jdbspractise.Dao;
+package jdbspractise.dao;
 
 import java.sql.Connection;
 

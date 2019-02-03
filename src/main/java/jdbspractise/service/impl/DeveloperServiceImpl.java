@@ -1,8 +1,11 @@
-package jdbspractise.Service.Impl;
+package jdbspractise.service.impl;
 
-import jdbspractise.Dao.DeveloperDao;
-import jdbspractise.Model.Developer;
-import jdbspractise.Service.DeveloperService;
+import jdbspractise.dao.DeveloperDao;
+import jdbspractise.model.Developer;
+import jdbspractise.model.Skill;
+import jdbspractise.service.DeveloperService;
+
+import java.util.Set;
 
 public class DeveloperServiceImpl implements DeveloperService {
 
@@ -30,5 +33,10 @@ public class DeveloperServiceImpl implements DeveloperService {
     @Override
     public void removeDeveloper(Long id) {
         developerDao.removeDeveloper(id);
+    }
+
+    @Override
+    public Set<Developer> findAllByTypeOfSkill(Skill.TypeOfSkill typeOfSkill) {
+        return null;
     }
 }

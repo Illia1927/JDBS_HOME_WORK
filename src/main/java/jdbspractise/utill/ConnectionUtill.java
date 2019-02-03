@@ -1,4 +1,4 @@
-package jdbspractise.Utill;
+package jdbspractise.utill;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

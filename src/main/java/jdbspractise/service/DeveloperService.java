@@ -1,6 +1,9 @@
-package jdbspractise.Service;
+package jdbspractise.service;
 
-import jdbspractise.Model.Developer;
+import jdbspractise.model.Developer;
+import jdbspractise.model.Skill;
+
+import java.util.Set;
 
 public interface DeveloperService {
     //create
@@ -11,4 +14,6 @@ public interface DeveloperService {
     void updateDeveloper(Developer developer);
     //delete
     void removeDeveloper(Long id);
+
+    Set<Developer> findAllByTypeOfSkill(Skill.TypeOfSkill typeOfSkill);
 }

@@ -1,30 +1,51 @@
-package jdbspractise.Dao.Impl;
+package jdbspractise.dao.impl;
 
-import jdbspractise.Dao.AbstractDao;
-import jdbspractise.Dao.DeveloperDao;
-import jdbspractise.Model.Developer;
+import jdbspractise.dao.AbstractDao;
+import jdbspractise.dao.DeveloperDao;
+import jdbspractise.model.Developer;
+import jdbspractise.model.Skill;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Set;
 
 public class DeveloperDaoImpl extends AbstractDao implements DeveloperDao {
     public DeveloperDaoImpl(Connection connection) {
         super(connection);
     }
-//override mothods
+
     @Override
     public void addDeveloper(Developer developer) {
         final String INSERT_DEVELOPER =
                 "INSERT INTO developers (name, age, salary) VALUE(?, ?, ?) ";
+        final String INSERT_DEVELOPER_SKILL =
+                "INSERT INTO skills(type, level, developer_id) VALUE(?, ?, ?) ";
+        final String SELECT_LAST_DEVELOPER_ID =
+                "SELECT MAX(developer_id) AS id FROM developers";
         try {
+            //insert developer
             PreparedStatement statement = connection.prepareStatement(INSERT_DEVELOPER);
 
             statement.setString(1, developer.getName());
             statement.setInt(2, developer.getAge());
             statement.setDouble(3, developer.getSalary());
             statement.executeUpdate();
+
+            //last id
+            ResultSet resultSet = statement.executeQuery(SELECT_LAST_DEVELOPER_ID);
+            resultSet.next();
+            Long lastDeveloperId = resultSet.getLong("id");
+
+            //insert develoer skill
+            statement = connection.prepareStatement(INSERT_DEVELOPER_SKILL);
+            for(Skill skill : developer.getSkills()){
+                statement.setString(1, skill.getSkillLevel().name());
+                statement.setString(2, skill.getTypeOfSkill().name());
+                statement.setLong(3, lastDeveloperId);
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -85,5 +106,10 @@ public class DeveloperDaoImpl extends AbstractDao implements DeveloperDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public Set<Developer> findAllByTypeOfSkill(Skill.TypeOfSkill typeOfSkill) {
+        return null;
     }
 }
