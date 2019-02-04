@@ -21,7 +21,6 @@ public class Developer {
     private Set<Skill> skills;
 
     public void addSkill(Skill skill){
-        skill.setDeveloperSkills(this);
         skills.add(skill);
     }
 }
