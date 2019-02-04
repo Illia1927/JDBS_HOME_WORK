@@ -1,10 +1,13 @@
 package jdbspractise;
 
 import jdbspractise.dao.impl.DeveloperDaoImpl;
+import jdbspractise.dao.impl.SkillDaoImpl;
 import jdbspractise.model.Developer;
 import jdbspractise.model.Skill;
 import jdbspractise.service.DeveloperService;
+import jdbspractise.service.SkillService;
 import jdbspractise.service.impl.DeveloperServiceImpl;
+import jdbspractise.service.impl.SkillServiceImpl;
 import jdbspractise.utill.ConnectionUtill;
 
 import java.sql.Connection;
@@ -14,7 +17,7 @@ public class Main {
     public static void main(String[] args) {
         Connection connection = ConnectionUtill.getConnection();
         DeveloperService developerService = new DeveloperServiceImpl(new DeveloperDaoImpl(connection));
-
+        SkillService skillService = new SkillServiceImpl(new SkillDaoImpl(connection));
         Developer developerOne = Developer
                 .builder()
                 .name("Maria")
@@ -34,7 +37,6 @@ public class Main {
 //        developerService.removeDeveloper(2L);
         Skill skill = Skill
                 .builder()
-                .skill_id(1L)
                 .typeOfSkill(Skill.TypeOfSkill.JAVA)
                 .skillLevel(Skill.SkillLevel.JUNIOR)
                 .build();
@@ -47,9 +49,9 @@ public class Main {
                 .salary(400D)
                 .skills(new HashSet<>())
                 .build();
-        developerTwo.addSkill(skill);
+
+        skillService.addSkill(skill);
 
         developerService.addDeveloper(developerTwo);
-
     }
 }

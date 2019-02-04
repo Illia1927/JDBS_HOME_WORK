@@ -35,8 +35,4 @@ public class DeveloperServiceImpl implements DeveloperService {
         developerDao.removeDeveloper(id);
     }
 
-    @Override
-    public Set<Developer> findAllByTypeOfSkill(Skill.TypeOfSkill typeOfSkill) {
-        return null;
-    }
 }

@@ -20,10 +20,6 @@ public class DeveloperDaoImpl extends AbstractDao implements DeveloperDao {
     public void addDeveloper(Developer developer) {
         final String INSERT_DEVELOPER =
                 "INSERT INTO developers (name, age, salary) VALUE(?, ?, ?) ";
-        final String INSERT_DEVELOPER_SKILL =
-                "INSERT INTO skills(type, level, developer_id) VALUE(?, ?, ?) ";
-        final String SELECT_LAST_DEVELOPER_ID =
-                "SELECT MAX(developer_id) AS id FROM developers";
         try {
             //insert developer
             PreparedStatement statement = connection.prepareStatement(INSERT_DEVELOPER);
@@ -32,19 +28,6 @@ public class DeveloperDaoImpl extends AbstractDao implements DeveloperDao {
             statement.setInt(2, developer.getAge());
             statement.setDouble(3, developer.getSalary());
             statement.executeUpdate();
-
-            //last id
-            ResultSet resultSet = statement.executeQuery(SELECT_LAST_DEVELOPER_ID);
-            resultSet.next();
-            Long lastDeveloperId = resultSet.getLong("id");
-
-            //insert develoer skill
-            statement = connection.prepareStatement(INSERT_DEVELOPER_SKILL);
-            for(Skill skill : developer.getSkills()){
-                statement.setString(1, skill.getSkillLevel().name());
-                statement.setString(2, skill.getTypeOfSkill().name());
-                statement.setLong(3, lastDeveloperId);
-            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -109,7 +92,26 @@ public class DeveloperDaoImpl extends AbstractDao implements DeveloperDao {
     }
 
     @Override
-    public Set<Developer> findAllByTypeOfSkill(Skill.TypeOfSkill typeOfSkill) {
-        return null;
+    public void getAllByTypeOfSkill(Skill skill){
+        final String GET_ALL_DEVELOPER_BY_TYPE_OF_SKILL =
+                "SELECT name FROM developers " +
+                "WHERE developer_id IN " +
+                "(SELECT skills_developers.developer_id " +
+                " FROM skills_developers " +
+                "WHERE skills_developers.skill_id IN " +
+                "(SELECT skill_id " +
+                "FROM skill " +
+                "WHERE skill.type = ?) " +
+                ");";
+        try {
+            PreparedStatement statement = connection.prepareStatement(GET_ALL_DEVELOPER_BY_TYPE_OF_SKILL);
+            statement.setString(1, skill.getTypeOfSkill().name());
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                System.out.println(resultSet.getString("name, "));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

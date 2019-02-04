@@ -15,5 +15,4 @@ public interface DeveloperService {
     //delete
     void removeDeveloper(Long id);
 
-    Set<Developer> findAllByTypeOfSkill(Skill.TypeOfSkill typeOfSkill);
 }

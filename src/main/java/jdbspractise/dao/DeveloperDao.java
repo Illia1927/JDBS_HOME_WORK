@@ -16,5 +16,5 @@ public interface DeveloperDao {
     //delete
     void removeDeveloper(Long id);
 
-    Set<Developer> findAllByTypeOfSkill(Skill.TypeOfSkill typeOfSkill);
+    void getAllByTypeOfSkill(Skill skill);
 }
