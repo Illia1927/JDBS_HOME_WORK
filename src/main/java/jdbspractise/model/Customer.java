@@ -13,18 +13,11 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = "developer_id")
-public class Developer {
-    private Long developer_id;
+@ToString(exclude = "customer_id")
+public class Customer {
+    private Long customer_id;
     private String name;
-    private Integer age;
-    private Double salary;
-    private Set<Skill> skills;
-    private Set<Project> projects;
-
-    public void addSkill(Skill skill){
-        skills.add(skill);
-    }
+    private Set<Project> projects = new HashSet<>();
 
     public void addProject(Project project){
         projects.add(project);
