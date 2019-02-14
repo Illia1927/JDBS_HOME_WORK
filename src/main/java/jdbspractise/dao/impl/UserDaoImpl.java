@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class UserDaoImpl extends AbstractDao implements UserDao {
     public UserDaoImpl(Connection connection) {
@@ -88,5 +89,31 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public User getByUsername(String login) {
+        final String SELECT = "SELECT * FROM users WHERE login = " + login + "";
+
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(SELECT);
+
+            return rs.next() ? getUser(rs) : null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+    private User getUser(ResultSet rs) throws SQLException {
+        User user = new User();
+        user.setUser_id(rs.getLong("user_id"));
+        user.setLogin(rs.getString("login"));
+        user.setEmail(rs.getString("email"));
+        user.setPassword(rs.getString("password"));
+        user.setName(rs.getString("name"));
+
+        return user;
     }
 }

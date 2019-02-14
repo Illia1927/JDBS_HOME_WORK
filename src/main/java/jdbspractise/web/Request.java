@@ -1,23 +1,30 @@
 package jdbspractise.web;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class Request {
     private String url;
     private RequestMathod method;
+    private Map<String, String[]> params;
 
     public enum RequestMathod {
         POST,
         GET
     }
 
-    public Request(String url, RequestMathod method) {
+    public Request(String url, RequestMathod method, Map<String, String[]> params) {
         this.url = url;
         this.method = method;
+        this.params = params;
     }
 
+    public static Request of(String url, RequestMathod method, Map<String, String[]> params){
+        return new Request(url, method, params);
+    }
     public static Request of(String url, RequestMathod method){
-        return new Request(url, method);
+        return new Request(url, method, new HashMap<>());
     }
 
     @Override
@@ -32,5 +39,18 @@ public class Request {
     @Override
     public int hashCode() {
         return Objects.hash(url, method);
+    }
+
+    public String getParamByName(String name){
+        return params.get(name)[0];
+    }
+
+    @Override
+    public String toString() {
+        return "Request{" +
+                "url='" + url + '\'' +
+                ", method=" + method +
+                ", params=" + params +
+                '}';
     }
 }

@@ -24,7 +24,8 @@
 
 <div class="login">
     <h1>Registration</h1>
-    <form method="post">
+    <form method="POST"
+          action="${pageContext.request.contextPath}/servlet/registration" modelattribute="userRegistrationInput">
         <input type="text" name="u" placeholder="Username" required="required" />
 
         <input type="text" name="u" placeholder="E-mail" required="required" />
