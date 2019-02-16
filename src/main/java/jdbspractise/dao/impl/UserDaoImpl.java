@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.UUID;
 
 public class UserDaoImpl extends AbstractDao implements UserDao {
     public UserDaoImpl(Connection connection) {
@@ -20,6 +21,8 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     public void addUser(User user) {
         final String INSERT_USERS =
                 "INSERT INTO users(name, email, password, login)  VALUE (?, ?, ?, ?) ";
+        User userToken = new User();
+        userToken.setTokken(getRandomToken());
         try {
             PreparedStatement statement = connection.prepareStatement(INSERT_USERS);
             statement.setString(1, user.getName());
@@ -48,6 +51,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
             user.setEmail(resultSet.getString("email"));
             user.setPassword(resultSet.getString("password"));
             user.setLogin(resultSet.getString("login"));
+            user.setTokken(resultSet.getString("token"));
 
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -106,6 +110,36 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 
         return null;
     }
+
+    @Override
+    public String getRandomToken() {
+        return UUID.randomUUID().toString();
+    }
+
+    @Override
+    public User findByToken(String token) {
+        String SELECT_TOKEN =
+                "SELECT * FROM users WHERE token =? ";
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(SELECT_TOKEN);
+            return rs.next() ? getToken(rs) : null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private User getToken(ResultSet rs) {
+        User user = new User();
+        try {
+            user.setTokken(rs.getString("token"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
     private User getUser(ResultSet rs) throws SQLException {
         User user = new User();
         user.setUser_id(rs.getLong("user_id"));
