@@ -6,6 +6,7 @@ import jdbspractise.model.Company;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CompanyDaoImpl extends AbstractDao implements CompanyDao {
@@ -30,16 +31,51 @@ public class CompanyDaoImpl extends AbstractDao implements CompanyDao {
 
     @Override
     public Company getCompanyById(Long id) {
-        return null;
+        final String GET_COMPANY_BY_ID =
+                "SELECT company_id, name FROM companies WHERE company_id=? ";
+        Company company = new Company();
+        try {
+            PreparedStatement statement = connection.prepareStatement(GET_COMPANY_BY_ID);
+            statement.setLong(1, id);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            company.setCompany_id(resultSet.getLong("company_id"));
+            company.setName(resultSet.getString("name"));
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return company;
     }
 
     @Override
     public void updateCompany(Company company) {
+        final String UPDATE_COMPANY =
+                "UPDATE companies SET name=? WHERE company_id=? ";
+        try {
+            PreparedStatement statement = connection.prepareStatement(UPDATE_COMPANY);
 
+            statement.setString(1, company.getName());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void removeCompany(Long id) {
+        final String DELETE_DEVELOPER =
+                "DELETE FROM companies WHERE company_id=? ";
+        try {
+            PreparedStatement statement = connection.prepareStatement(DELETE_DEVELOPER);
 
+            statement.setLong(1, id);
+            statement.execute();
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

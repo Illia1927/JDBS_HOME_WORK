@@ -13,4 +13,7 @@ public interface UserDao {
 
     User getByUsername(String login);
 
+    String getRandomToken();
+
+    User findByToken(String token);
 }

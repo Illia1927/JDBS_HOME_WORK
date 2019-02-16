@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Set;
 
 public class DeveloperDaoImpl extends AbstractDao implements DeveloperDao {
     public DeveloperDaoImpl(Connection connection) {
@@ -60,7 +59,7 @@ public class DeveloperDaoImpl extends AbstractDao implements DeveloperDao {
     @Override
     public void updateDeveloper(Developer developer) {
         final String UPDATE_DEVELOPER =
-                "UPDATE developers SET name=?, age=?, salary=? WHERE id=? ";
+                "UPDATE developers SET name=?, age=?, salary=? WHERE developer_id=? ";
         try {
             PreparedStatement statement = connection.prepareStatement(UPDATE_DEVELOPER);
 
@@ -78,7 +77,7 @@ public class DeveloperDaoImpl extends AbstractDao implements DeveloperDao {
     @Override
     public void removeDeveloper(Long id) {
         final String DELETE_DEVELOPER =
-                "DELETE FROM developers WHERE id=? ";
+                "DELETE FROM developers WHERE developer_id=? ";
         try {
             PreparedStatement statement = connection.prepareStatement(DELETE_DEVELOPER);
 
