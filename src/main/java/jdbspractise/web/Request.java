@@ -20,10 +20,11 @@ public class Request {
         this.params = params;
     }
 
-    public static Request of(String url, RequestMathod method, Map<String, String[]> params){
+    public static Request of(String url, RequestMathod method, Map<String, String[]> params) {
         return new Request(url, method, params);
     }
-    public static Request of(String url, RequestMathod method){
+
+    public static Request of(String url, RequestMathod method) {
         return new Request(url, method, new HashMap<>());
     }
 
@@ -41,7 +42,13 @@ public class Request {
         return Objects.hash(url, method);
     }
 
-    public String getParamByName(String name){
+    public String getParamByName(String name) {
+        //////////////////
+        System.out.println("////////////////////////////////////////////////////");
+        System.out.println(params.isEmpty());
+        System.out.println(params.toString());
+        System.out.println(params.entrySet());
+        //////////////////////
         return params.get(name)[0];
     }
 

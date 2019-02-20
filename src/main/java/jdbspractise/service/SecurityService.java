@@ -1,10 +1,11 @@
 package jdbspractise.service;
 
 import jdbspractise.model.User;
+import jdbspractise.web.ViewModel;
 
 public interface SecurityService {
 
-    public boolean doLog(String login, String password);
+    ViewModel doLog(String login, String password);
 
-    public boolean doReg(User user);
+    boolean doReg(User user);
 }

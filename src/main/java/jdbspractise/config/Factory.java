@@ -1,23 +1,38 @@
 package jdbspractise.config;
 
+import jdbspractise.controller.LoginController;
 import jdbspractise.controller.RegistrationController;
 import jdbspractise.dao.UserDao;
 import jdbspractise.dao.impl.UserDaoImpl;
+import jdbspractise.service.SecurityService;
 import jdbspractise.service.UserService;
+import jdbspractise.service.impl.SecurityServiceImpl;
 import jdbspractise.service.impl.UserServiceImpl;
 import jdbspractise.utill.ConnectionUtill;
 
 import java.sql.Connection;
 
-public class Fectory {
+public class Factory {
     private final static Connection CONNECTION;
-    private Fectory(){}
-    public static RegistrationController getRegistrationController(){
-        return new RegistrationController(getUserService());
+
+    private Factory(){
+
+    }
+
+    public static RegistrationController getRegistrationController() {
+        return new RegistrationController(getSecurityService());
     }
 
     static {
         CONNECTION = ConnectionUtill.getConnection();
+    }
+
+    public static LoginController getLoginController() {
+        return new LoginController(getSecurityService());
+    }
+
+    public static SecurityService getSecurityService() {
+        return new SecurityServiceImpl(getUserService());
     }
 
     public static UserService getUserService(){
