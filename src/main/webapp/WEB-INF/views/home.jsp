@@ -26,7 +26,6 @@
         <button type="submit" class="btn btn-primary btn-block btn-large">Login</button>
         <button type="submit" class="btn btn-primary btn-block btn-large">Registration</button>
     </form>
-
 </div>
 
 <script  src="js/index.js"></script>

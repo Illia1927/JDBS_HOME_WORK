@@ -7,25 +7,36 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Getter
 @Setter
-@ToString(exclude = "user_id")
+@ToString(exclude = "userId")
 public class User {
-    private Long user_id;
+    private Long userId;
     private String name;
     private String login;
     private String password;
     private String email;
     private String tokken;
+    private Role roles;
 
-    public User(String name, String login, String password, String email) {
+    public User(String login, String name, String email,  String password) {
         this.name = name;
         this.login = login;
         this.password = password;
         this.email = email;
+    }
+
+    public Role getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Role roles) {
+        this.roles = roles;
     }
 
     public String getToken(){

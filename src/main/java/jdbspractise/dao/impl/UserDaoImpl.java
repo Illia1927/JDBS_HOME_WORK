@@ -20,7 +20,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     @Override
     public void addUser(User user) {
         final String INSERT_USERS =
-                "INSERT INTO users(name, email, password, login)  VALUE (?, ?, ?, ?) ";
+                "INSERT INTO users(name, email, password, login, token)  VALUE (?,?, ?, ?, ?) ";
         User userToken = new User();
         userToken.setTokken(getRandomToken());
         try {
@@ -29,6 +29,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
             statement.setString(2, user.getEmail());
             statement.setString(3, user.getPassword());
             statement.setString(4, user.getLogin());
+            statement.setString(5, getRandomToken());
             statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -46,7 +47,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 
             ResultSet resultSet = statement.executeQuery();
 
-            user.setUser_id(resultSet.getLong("user_id"));
+            user.setUserId(resultSet.getLong("users_id"));
             user.setName(resultSet.getString("name"));
             user.setEmail(resultSet.getString("email"));
             user.setPassword(resultSet.getString("password"));
@@ -71,7 +72,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
             statement.setString(2, user.getEmail());
             statement.setString(3, user.getPassword());
             statement.setString(4, user.getLogin());
-            statement.setLong(5, user.getUser_id());
+            statement.setLong(5, user.getUserId());
 
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -97,17 +98,17 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 
     @Override
     public User getByUsername(String login) {
-        final String SELECT = "SELECT * FROM users WHERE login = " + login + "";
+        final String SELECT = "SELECT * FROM users WHERE login = ? ";
 
         try {
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery(SELECT);
+            PreparedStatement statement = connection.prepareStatement(SELECT);
+            statement.setString(1, login);
+            ResultSet rs = statement.executeQuery();
 
             return rs.next() ? getUser(rs) : null;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 
@@ -142,7 +143,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 
     private User getUser(ResultSet rs) throws SQLException {
         User user = new User();
-        user.setUser_id(rs.getLong("user_id"));
+        user.setUserId(rs.getLong("users_id"));
         user.setLogin(rs.getString("login"));
         user.setEmail(rs.getString("email"));
         user.setPassword(rs.getString("password"));

@@ -26,15 +26,13 @@
     <h1>Registration</h1>
     <form method="POST"
           action="${pageContext.request.contextPath}/servlet/registration" modelattribute="userRegistrationInput">
-        <input type="text" name="u" placeholder="Username" required="required" />
+        <input type="text" name="login" placeholder="login" required="required" />
 
-        <input type="text" name="u" placeholder="E-mail" required="required" />
+        <input type="text" name="name" placeholder="name" required="required" />
 
-        <input type="text" name="u" placeholder="Name" required="required" />
+        <input type="text" name="email" placeholder="email" required="required" />
 
-        <input type="text" name="u" placeholder="Surname" required="required" />
-
-        <input type="password" name="p" placeholder="Password" required="required" />
+        <input type="password" name="password" placeholder="password" required="required" />
 
         <button type="submit" class="btn btn-primary btn-block btn-large">Registration</button>
     </form>
@@ -42,6 +40,12 @@
 </div>
 
 <script  src="js/index.js"></script>
+<a href="${pageContext.request.contextPath}/servlet/login">
+    <form method="GET"
+          action="${pageContext.request.contextPath}/servlet/login">
+        <input type="submit" value=" Go to login ">
+    </form>
+</a>
 
 </body>
 

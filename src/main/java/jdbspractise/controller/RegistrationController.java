@@ -1,24 +1,30 @@
 package jdbspractise.controller;
 
 import jdbspractise.model.User;
-import jdbspractise.service.UserService;
+import jdbspractise.service.SecurityService;
+import jdbspractise.web.PassEncoder;
 import jdbspractise.web.Request;
 import jdbspractise.web.ViewModel;
 
 public class RegistrationController implements Controller {
-    private UserService userService;
-    public RegistrationController(UserService userService) {
+
+    private SecurityService securityService;
+
+    public RegistrationController(SecurityService securityService) {
+        this.securityService = securityService;
     }
 
     @Override
     public ViewModel process(Request request) {
         String login = request.getParamByName("login");
-        String password = request.getParamByName("password");
         String name = request.getParamByName("name");
         String email = request.getParamByName("email");
-        User user = new User(login, password, name, email);
-        userService.addUser(user);
-        System.out.println(user.toString());
-        return ViewModel.of("home");
+        String password = PassEncoder.encode(request.getParamByName("password"));
+
+        User user = new User(login, name, email, password);
+
+        securityService.doReg(user);
+
+        return ViewModel.of("login");
     }
 }
