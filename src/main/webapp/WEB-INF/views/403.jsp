@@ -8,9 +8,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Aacces denided</title>
+    <title>Access denided</title>
 </head>
 <body>
-<H1>Для тебя нет доступа, додык</H1>
+<H1>You don`t have a access</H1>
 </body>
 </html>

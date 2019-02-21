@@ -42,7 +42,7 @@ public class CompanyDaoImpl extends AbstractDao implements CompanyDao {
 
             company.setCompany_id(resultSet.getLong("company_id"));
             company.setName(resultSet.getString("name"));
-            statement.executeUpdate();
+            statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }
