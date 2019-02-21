@@ -2,7 +2,6 @@ package jdbspractise.dao.impl;
 
 import jdbspractise.dao.AbstractDao;
 import jdbspractise.dao.UserDao;
-import jdbspractise.model.Developer;
 import jdbspractise.model.User;
 
 import java.sql.Connection;
@@ -19,12 +18,12 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 
     @Override
     public void addUser(User user) {
-        final String INSERT_USERS =
+        final String INSERT_USER =
                 "INSERT INTO users(name, email, password, login, token)  VALUE (?,?, ?, ?, ?) ";
-        User userToken = new User();
-        userToken.setTokken(getRandomToken());
+        User token = new User();
+        token.setTokken(getRandomToken());
         try {
-            PreparedStatement statement = connection.prepareStatement(INSERT_USERS);
+            PreparedStatement statement = connection.prepareStatement(INSERT_USER);
             statement.setString(1, user.getName());
             statement.setString(2, user.getEmail());
             statement.setString(3, user.getPassword());
@@ -39,7 +38,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     @Override
     public User getUserById(Long id) {
         final String GET_USER_BY_ID =
-                "SELECT name, email, password, login FROM users WHERE users_id =? ";
+                "SELECT name, email, password, login FROM users WHERE user_id =? ";
         User user = new User();
         try {
             PreparedStatement statement = connection.prepareStatement(GET_USER_BY_ID);
@@ -47,7 +46,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 
             ResultSet resultSet = statement.executeQuery();
 
-            user.setUserId(resultSet.getLong("users_id"));
+            user.setUserId(resultSet.getLong("user_id"));
             user.setName(resultSet.getString("name"));
             user.setEmail(resultSet.getString("email"));
             user.setPassword(resultSet.getString("password"));
@@ -143,7 +142,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 
     private User getUser(ResultSet rs) throws SQLException {
         User user = new User();
-        user.setUserId(rs.getLong("users_id"));
+        user.setUserId(rs.getLong("user_id"));
         user.setLogin(rs.getString("login"));
         user.setEmail(rs.getString("email"));
         user.setPassword(rs.getString("password"));

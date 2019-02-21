@@ -16,8 +16,6 @@ public class SecurityServiceImpl implements SecurityService {
 
     @Override
     public ViewModel doLog(String login, String password) {
-        System.out.println("Start do log 22222222222");
-
 
         User user = userService.getByUsername(login);
         String expectePassword = user.getPassword();

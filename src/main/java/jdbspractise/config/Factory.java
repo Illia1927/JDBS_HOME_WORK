@@ -15,7 +15,7 @@ import java.sql.Connection;
 public class Factory {
     private final static Connection CONNECTION;
 
-    private Factory(){
+    private Factory() {
 
     }
 
@@ -35,11 +35,11 @@ public class Factory {
         return new SecurityServiceImpl(getUserService());
     }
 
-    public static UserService getUserService(){
+    public static UserService getUserService() {
         return new UserServiceImpl(getUserDao());
     }
 
-    public static UserDao getUserDao(){
+    public static UserDao getUserDao() {
         return new UserDaoImpl(CONNECTION);
     }
 }

@@ -43,12 +43,6 @@ public class Request {
     }
 
     public String getParamByName(String name) {
-        //////////////////
-        System.out.println("////////////////////////////////////////////////////");
-        System.out.println(params.isEmpty());
-        System.out.println(params.toString());
-        System.out.println(params.entrySet());
-        //////////////////////
         return params.get(name)[0];
     }
 

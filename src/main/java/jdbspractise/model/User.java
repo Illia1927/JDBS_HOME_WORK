@@ -21,7 +21,7 @@ public class User {
     private String login;
     private String password;
     private String email;
-    private String tokken;
+    private String token;
     private Role roles;
 
     public User(String login, String name, String email,  String password) {
@@ -40,6 +40,6 @@ public class User {
     }
 
     public String getToken(){
-        return tokken;
+        return token;
     }
 }
