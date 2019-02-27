@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Set;
 
 public class SkillDaoImpl extends AbstractDao implements SkillDao {
 
@@ -28,6 +27,29 @@ public class SkillDaoImpl extends AbstractDao implements SkillDao {
             statement.setLong(3, skill.getDeveloperSkills().getDeveloper_id());
             statement.execute();
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void addSkillForDeveloper(Developer developer) {
+        final String ADD_SKILL_FOR_DEVELOPER =
+                "INSERT INTO skills(type, level, developer_id) VALUE (?, ?, ?)";
+        final String SELECT_LAST_DEVELOPER_INDEX =
+                "SELECT MAX(developer_id) AS id FROM developers";
+        try {
+            PreparedStatement statement = connection.prepareStatement(ADD_SKILL_FOR_DEVELOPER);
+            ResultSet rs = statement.executeQuery(SELECT_LAST_DEVELOPER_INDEX);
+            rs.next();
+            long lastDevId = rs.getLong("id");
+            statement = connection.prepareStatement(ADD_SKILL_FOR_DEVELOPER);
+            for (Skill skill : developer.getSkills()) {
+                statement.setString(1, skill.getTypeOfSkill().name());
+                statement.setString(2, skill.getSkillLevel().name());
+                statement.setLong(3, lastDevId);
+                statement.executeUpdate();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
