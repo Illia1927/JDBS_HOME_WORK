@@ -19,9 +19,9 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     @Override
     public void addUser(User user) {
         final String INSERT_USER =
-                "INSERT INTO users(name, email, password, login, token)  VALUE (?,?, ?, ?, ?) ";
-        User token = new User();
-        token.setTokken(getRandomToken());
+                "INSERT INTO users(name, email, password, login, token)  VALUE (?, ?, ?, ?, ?) ";
+//        User token = new User();
+//        token.setToken(getRandomToken());
         try {
             PreparedStatement statement = connection.prepareStatement(INSERT_USER);
             statement.setString(1, user.getName());
@@ -38,7 +38,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     @Override
     public User getUserById(Long id) {
         final String GET_USER_BY_ID =
-                "SELECT name, email, password, login FROM users WHERE user_id =? ";
+                "SELECT name, email, password, login, token FROM users WHERE user_id =? ";
         User user = new User();
         try {
             PreparedStatement statement = connection.prepareStatement(GET_USER_BY_ID);
@@ -51,7 +51,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
             user.setEmail(resultSet.getString("email"));
             user.setPassword(resultSet.getString("password"));
             user.setLogin(resultSet.getString("login"));
-            user.setTokken(resultSet.getString("token"));
+            user.setToken(resultSet.getString("token"));
 
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -63,7 +63,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     @Override
     public void updateUser(User user) {
         final String UPDATE_USER =
-                "UPDATE users SET name=?, email=?, password=?, login=? WHERE id=? ";
+                "UPDATE users SET name=?, email=?, password=?, login=? WHERE user_id=? ";
         try {
             PreparedStatement statement = connection.prepareStatement(UPDATE_USER);
 
@@ -82,7 +82,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     @Override
     public void removeUser(Long id) {
         final String DELETE_USER =
-                "DELETE FROM users WHERE id=? ";
+                "DELETE FROM users WHERE user_id = ? ";
         try {
             PreparedStatement statement = connection.prepareStatement(DELETE_USER);
 
@@ -133,7 +133,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     private User getToken(ResultSet rs) {
         User user = new User();
         try {
-            user.setTokken(rs.getString("token"));
+            user.setToken(rs.getString("token"));
         } catch (SQLException e) {
             e.printStackTrace();
         }

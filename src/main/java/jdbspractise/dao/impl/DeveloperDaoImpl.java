@@ -9,6 +9,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashSet;
+import java.util.Set;
 
 public class DeveloperDaoImpl extends AbstractDao implements DeveloperDao {
     public DeveloperDaoImpl(Connection connection) {
@@ -19,6 +22,10 @@ public class DeveloperDaoImpl extends AbstractDao implements DeveloperDao {
     public void addDeveloper(Developer developer) {
         final String INSERT_DEVELOPER =
                 "INSERT INTO developers (name, age, salary) VALUE(?, ?, ?) ";
+        final String SELECT_LAST_DEVELOPER_INDEX =
+                "SELECT MAX(developer_id) AS id FROM developers";
+        final String ADD_SKILL_FOR_DEVELOPER =
+                "INSERT INTO skills(type, level, developer_id) VALUE (?, ?, ?)";
         try {
             //insert developer
             PreparedStatement statement = connection.prepareStatement(INSERT_DEVELOPER);
@@ -28,6 +35,17 @@ public class DeveloperDaoImpl extends AbstractDao implements DeveloperDao {
             statement.setDouble(3, developer.getSalary());
             statement.executeUpdate();
 
+            ResultSet rs = statement.executeQuery(SELECT_LAST_DEVELOPER_INDEX);
+            rs.next();
+            long lastDevId = rs.getLong("id");
+
+            statement = connection.prepareStatement(ADD_SKILL_FOR_DEVELOPER);
+            for(Skill skill : developer.getSkills()) {
+                statement.setString(1, skill.getTypeOfSkill().name());
+                statement.setString(2, skill.getSkillLevel().name());
+                statement.setLong(3, lastDevId);
+                statement.executeUpdate();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -36,20 +54,15 @@ public class DeveloperDaoImpl extends AbstractDao implements DeveloperDao {
     @Override
     public Developer getDeveloperById(Long id) {
         final String GET_DEVELOPER_BY_ID =
-                "SELECT developer_id, name, age, salary FROM developers WHERE developer_id=? ";
+                "SELECT * FROM developers WHERE developer_id=\"" + id + "\"";
         Developer developer = new Developer();
         try {
-            PreparedStatement statement = connection.prepareStatement(GET_DEVELOPER_BY_ID);
-            statement.setLong(1, id);
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(GET_DEVELOPER_BY_ID);
+            if (!rs.next()) {
+                return developer;
+            }
 
-            ResultSet resultSet = statement.executeQuery();
-
-            developer.setDeveloper_id(resultSet.getLong("developer_id"));
-            developer.setName(resultSet.getString("name"));
-            developer.setAge(resultSet.getInt("age"));
-            developer.setSalary(resultSet.getDouble("salary"));
-
-            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -90,27 +103,56 @@ public class DeveloperDaoImpl extends AbstractDao implements DeveloperDao {
         }
     }
 
+//    @Override
+//    public void getAllByTypeOfSkill(Skill skill) {
+//        final String GET_ALL_DEVELOPER_BY_TYPE_OF_SKILL =
+//                "SELECT name FROM developers " +
+//                        "WHERE developer_id IN " +
+//                        "(SELECT skills_developers.developer_id " +
+//                        " FROM skills_developers " +
+//                        "WHERE skills_developers.skill_id IN " +
+//                        "(SELECT skill_id " +
+//                        "FROM skills " +
+//                        "WHERE skills.type = ? " +
+//                        ");";
+//        try {
+//            PreparedStatement statement = connection.prepareStatement(GET_ALL_DEVELOPER_BY_TYPE_OF_SKILL);
+//            statement.setString(1, skill.getTypeOfSkill().name());
+//            ResultSet resultSet = statement.executeQuery();
+//            while (resultSet.next()) {
+//                System.out.println(resultSet.getString("name, "));
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+
     @Override
-    public void getAllByTypeOfSkill(Skill skill){
-        final String GET_ALL_DEVELOPER_BY_TYPE_OF_SKILL =
-                "SELECT name FROM developers " +
-                "WHERE developer_id IN " +
-                "(SELECT skills_developers.developer_id " +
-                " FROM skills_developers " +
-                "WHERE skills_developers.skill_id IN " +
-                "(SELECT skill_id " +
-                "FROM skill " +
-                "WHERE skill.type = ?) " +
-                ");";
+    public Set<Developer> findAllByLevelOfSkill(Skill.SkillLevel skillLevel) {
+        final String SELECT_DEV_BY_LEVEL_OF_SKILL =
+                "SELECT developers.developer_id FROM developers " +
+                        "INNER JOIN skills ON skills.developer_id = developers.developer_id " +
+                        "WHERE skills.level=\"" + skillLevel + "\"";
+        return getDevelopers(SELECT_DEV_BY_LEVEL_OF_SKILL);
+    }
+
+    private Set<Developer> getDevelopers(String query) {
+        Set<Developer> developers = new HashSet<>();
+        Set<Long> developersId = new HashSet<>();
+
         try {
-            PreparedStatement statement = connection.prepareStatement(GET_ALL_DEVELOPER_BY_TYPE_OF_SKILL);
-            statement.setString(1, skill.getTypeOfSkill().name());
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()){
-                System.out.println(resultSet.getString("name, "));
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                developersId.add(rs.getLong("developer_id"));
             }
+            developersId.forEach(id -> developers.add(getDeveloperById(id)));
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return developers;
     }
 }
+

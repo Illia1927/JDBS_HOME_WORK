@@ -11,10 +11,33 @@
     <title>Title</title>
 </head>
 <body>
-<div class="login">
-    <form method="post">
-        <button type="submit" class="btn btn-primary btn-block btn-large">login</button>
-    </form>
-</div>
+<a href="${pageContext.request.contextPath}/servlet/registration">
+    registration
+</a>
+
+<a href="${pageContext.request.contextPath}/servlet/admin">
+    admin
+</a>
+
+<a href="${pageContext.request.contextPath}/servlet/header2">
+    header2
+</a>
+
+<a href="${pageContext.request.contextPath}/servlet/403">
+    403
+</a>
+
+<a href="${pageContext.request.contextPath}/servlet/404">
+    404
+</a>
+
+<a href="${pageContext.request.contextPath}/servlet/home">
+    <input type="submit" value=" home ">
+</a>
+
+<a href="${pageContext.request.contextPath}/servlet/login">
+    <input type="submit" value=" login ">
+</a>
+
 </body>
 </html>

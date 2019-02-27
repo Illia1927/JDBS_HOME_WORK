@@ -19,21 +19,30 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
 
 </head>
-
+<%@include file="header1.jsp" %>
 <body>
 
 <div class="login">
     <h1>Login</h1>
-    <form method="post">
-        <input type="text" name="login" placeholder="login" required="required" />
-        <input type="password" name="password" placeholder="password" required="required" />
-        <button type="submit" class="btn btn-primary btn-block btn-large">Let me in.</button>
+    <form method="POST"
+          action="${pageContext.request.contextPath}/servlet/login">
+        <span class="fontawesome-user"></span>
+        <input name="login" type="text" class="form-control" placeholder="login"/>
+        <span class="fontawesome-lock"></span>
+        <input name="password" type="password" class="form-control" placeholder="password"/>
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <input type="submit" value="let me in">
     </form>
+    <a href="${pageContext.request.contextPath}/servlet/registration">
+        <form method="GET"
+              action="${pageContext.request.contextPath}/servlet/registration">
+            <input type="submit" value=" Go to registration ">
+        </form>
+    </a>
 
 </div>
 
-<script  src="js/index.js"></script>
-
+<script src="js/index.js"></script>
 </body>
 
 </html>

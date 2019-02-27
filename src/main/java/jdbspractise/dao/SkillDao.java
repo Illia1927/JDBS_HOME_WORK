@@ -11,4 +11,5 @@ public interface SkillDao {
     void updateSkill(Skill skill);
 
     void removeSkill(Long id);
+
 }

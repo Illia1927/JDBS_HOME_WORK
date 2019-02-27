@@ -35,4 +35,18 @@ public class DeveloperServiceImpl implements DeveloperService {
         developerDao.removeDeveloper(id);
     }
 
+//    @Override
+//    public void getAllByTypeOfSkill(Skill skill) {
+//        developerDao.getAllByTypeOfSkill(skill);
+//    }
+
+    @Override
+    public Set<Developer> findAllByLevelOfSkill(Skill.SkillLevel skillLevel) {
+        return developerDao.findAllByLevelOfSkill(skillLevel);
+    }
+
+    @Override
+    public Set<Developer> findAllByLevelOfSkill(String skillLevel) {
+        return developerDao.findAllByLevelOfSkill(Skill.SkillLevel.valueOf(skillLevel.toUpperCase()));
+    }
 }
