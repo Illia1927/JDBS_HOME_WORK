@@ -22,7 +22,7 @@ public class User {
     private String password;
     private String email;
     private String token;
-    private Role roles;
+    private List<Role> roles;
 
     public User(String login, String name, String email,  String password) {
         this.name = name;
@@ -31,11 +31,15 @@ public class User {
         this.email = email;
     }
 
-    public Role getRoles() {
+    public void addRole(String role) {
+        roles.add(new Role(role));
+    }
+
+    public List<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Role roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
 
