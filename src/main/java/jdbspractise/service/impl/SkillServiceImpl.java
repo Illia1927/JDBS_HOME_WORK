@@ -1,6 +1,7 @@
 package jdbspractise.service.impl;
 
 import jdbspractise.dao.SkillDao;
+import jdbspractise.model.Developer;
 import jdbspractise.model.Skill;
 import jdbspractise.service.SkillService;
 
@@ -29,5 +30,10 @@ public class SkillServiceImpl implements SkillService {
     @Override
     public void removeSkill(Long id) {
         skillDao.removeSkill(id);
+    }
+
+    @Override
+    public void addSkillForDeveloper(Developer developer) {
+        skillDao.addSkillForDeveloper(developer);
     }
 }

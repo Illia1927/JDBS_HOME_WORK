@@ -1,5 +1,6 @@
 package jdbspractise.service;
 
+import jdbspractise.model.Developer;
 import jdbspractise.model.Skill;
 
 public interface SkillService {
@@ -11,4 +12,6 @@ public interface SkillService {
     void updateSkill(Skill skill);
 
     void removeSkill(Long id);
+
+    void addSkillForDeveloper(Developer developer);
 }

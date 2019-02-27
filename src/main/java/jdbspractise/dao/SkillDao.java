@@ -1,5 +1,6 @@
 package jdbspractise.dao;
 
+import jdbspractise.model.Developer;
 import jdbspractise.model.Skill;
 
 public interface SkillDao {
@@ -12,4 +13,5 @@ public interface SkillDao {
 
     void removeSkill(Long id);
 
+    void addSkillForDeveloper(Developer developer);
 }
