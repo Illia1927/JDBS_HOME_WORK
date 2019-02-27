@@ -9,13 +9,15 @@ public interface DeveloperDao {
 
     //create
     void addDeveloper(Developer developer);
+
     //read
     Developer getDeveloperById(Long id);
+
     //upate
     void updateDeveloper(Developer developer);
+
     //delete
     void removeDeveloper(Long id);
 
-//    void getAllByTypeOfSkill(Skill skill);
- Set<Developer> findAllByLevelOfSkill(Skill.SkillLevel skillLevel);
+    Set<Developer> findAllByLevelOfSkill(Skill.SkillLevel skillLevel);
 }

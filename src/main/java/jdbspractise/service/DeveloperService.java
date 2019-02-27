@@ -15,4 +15,10 @@ public interface DeveloperService {
     //delete
     void removeDeveloper(Long id);
 
+//    void getAllByTypeOfSkill(Skill skill);
+
+    Set<Developer> findAllByLevelOfSkill(Skill.SkillLevel skillLevel);
+
+
+    Set<Developer> findAllByLevelOfSkill(String skillLevel);
 }

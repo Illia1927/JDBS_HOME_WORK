@@ -14,11 +14,7 @@ public class Main {
     public static void main(String[] args) {
         Connection connection = ConnectionUtill.getConnection();
         DeveloperService developerService = new DeveloperServiceImpl(new DeveloperDaoImpl(connection));
-//        SkillService skillService = new SkillServiceImpl(new SkillDaoImpl(connection));
-//        ProjectService projectService = new ProjectServiceImpl(new ProjectDaoImpl(connection));
-//        CompanyService companyService = new CompanyServiceImpl(new CompanyDaoImpl(connection));
-//        CustomerService customerService = new CustomerServiceImpl(new CustomerDaoImpl(connection));
-
+        
         Skill skill = Skill
                 .builder()
                 .typeOfSkill(Skill.TypeOfSkill.JAVA)
@@ -35,7 +31,7 @@ public class Main {
 
         developerOne.addSkill(skill);
         developerService.addDeveloper(developerOne);
-        developerService.getDeveloperById(17L);
+        developerService.getDeveloperById(developerOne.getDeveloper_id());
         developerService.findAllByLevelOfSkill("junior").forEach(System.out::println);
         System.out.println(developerOne.toString());
     }

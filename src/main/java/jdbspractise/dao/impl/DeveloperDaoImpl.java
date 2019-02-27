@@ -22,10 +22,6 @@ public class DeveloperDaoImpl extends AbstractDao implements DeveloperDao {
     public void addDeveloper(Developer developer) {
         final String INSERT_DEVELOPER =
                 "INSERT INTO developers (name, age, salary) VALUE(?, ?, ?) ";
-        final String SELECT_LAST_DEVELOPER_INDEX =
-                "SELECT MAX(developer_id) AS id FROM developers";
-        final String ADD_SKILL_FOR_DEVELOPER =
-                "INSERT INTO skills(type, level, developer_id) VALUE (?, ?, ?)";
         try {
             //insert developer
             PreparedStatement statement = connection.prepareStatement(INSERT_DEVELOPER);
@@ -35,17 +31,6 @@ public class DeveloperDaoImpl extends AbstractDao implements DeveloperDao {
             statement.setDouble(3, developer.getSalary());
             statement.executeUpdate();
 
-            ResultSet rs = statement.executeQuery(SELECT_LAST_DEVELOPER_INDEX);
-            rs.next();
-            long lastDevId = rs.getLong("id");
-
-            statement = connection.prepareStatement(ADD_SKILL_FOR_DEVELOPER);
-            for(Skill skill : developer.getSkills()) {
-                statement.setString(1, skill.getTypeOfSkill().name());
-                statement.setString(2, skill.getSkillLevel().name());
-                statement.setLong(3, lastDevId);
-                statement.executeUpdate();
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
